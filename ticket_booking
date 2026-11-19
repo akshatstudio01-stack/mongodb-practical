@@ -1,0 +1,48 @@
+use ticketDB
+
+db.createCollection("bookings")
+
+db.bookings.insertMany([
+  {
+    _id: 1,
+    passenger: "Rahul",
+    route: "Chennai-Madurai",
+    seats: 2
+  },
+  {
+    _id: 2,
+    passenger: "Sneha",
+    route: "Chennai-Coimbatore",
+    seats: 1
+  },
+  {
+    _id: 3,
+    passenger: "Chandru",
+    route: "Madurai-Trichy",
+    seats: 3
+  },
+  {
+    _id: 4,
+    passenger: "Divya",
+    route: "Salem-Chennai",
+    seats: 1
+  },
+  {
+    _id: 5,
+    passenger: "Elango",
+    route: "Chennai-Trichy",
+    seats: 2
+  }
+])
+
+mongosh "YOUR_ATLAS_URI" --file ticket_booking.js
+
+mongodump --uri="YOUR_ATLAS_URI" --db=ticketDB --out="C:\MongoBackups\ticketDB"
+
+Get-ChildItem "C:\MongoBackups\ticketDB" -Recurse
+
+mongorestore --uri="YOUR_ATLAS_URI" --nsFrom="ticketDB.*" --nsTo="ticketDB_restore.*" "C:\MongoBackups\ticketDB"
+
+use ticketDB_restore
+
+db.bookings.countDocuments()
